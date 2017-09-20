@@ -53,14 +53,14 @@ stage 'Download'
     node {
         echo 'Building.......'
         notifyBuildSlack('Starting Prod Job','chatops')
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/testing-pipeline']]])
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]])
         }
 
 stage 'SonarQube'
     node {
         echo 'Testing...'
         withSonarQubeEnv('SonarQube') {
-          sh ' /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner -Dsonar.projectBaseDir=/var/lib/jenkins/workspace/CICD/CICD-Demo-Prod'
+          sh ' /var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner -Dsonar.projectBaseDir=/var/lib/jenkins/workspace/docker-test'
             }
     }
 
@@ -69,36 +69,18 @@ stage 'Junit'
     echo 'Starting Junit Testing'
   }
 
-stage 'Build'
+stage 'Docker Image'
   node {
     echo 'Building Application'
-    nodejs('NodeJS') 
-      {
         sh '''
-        rm -rf /var/lib/jenkins/rpmbuild/SOURCES/*
-        mkdir -p nodejsapp-1.0
-        rsync -rv * nodejsapp-1.0 
-        tar -cvf nodejsapp-1.0.tar.gz nodejsapp-1.0
-        cp nodejsapp-1.0.tar.gz /var/lib/jenkins/rpmbuild/SOURCES/ 
-        rpmbuild -ba -vv  cicd.spec
-        '''
-  }
+            Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
+            docker build -t ${JOB_NAME}-$Branch .
+        '''  
 }
 
-stage 'Upload'
-node {
-    echo 'Updating Yum REPO'
-}
 
-stage('Approval'){
-    notifySlackApprovalApplicationOwner('chatops')
-    input "Deploy to prod?"
-}
 stage 'Deploy'
     node {
     echo 'Deploying to server..'
-    sh '''
-        rsync -auv /var/lib/jenkins/workspace/CICD/CICD-Demo-Prod/* /appl/node/
-        '''
     notifyDeploySlack('Production Job Finished','chatops')
     }
