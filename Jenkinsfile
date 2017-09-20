@@ -71,13 +71,13 @@ stage 'Junit'
 
 stage 'Docker Image'
   node {
-sh '''    echo \'Building Application\'
-    git url: \'https://github.com/urwithrajesh/docker-test\'
-    sh \'git rev-parse --abbrev-ref HEAD > GIT_BRANCH\'
-    git_branch = readFile(\'GIT_BRANCH\').trim()
+    echo 'Building Application'
+    git url: 'https://github.com/urwithrajesh/docker-test'
+    sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
+    git_branch = readFile('GIT_BRANCH').trim()
     echo git_branch
-    docker build -t ${JOB_NAME}"-${git_branch} .'''
-
+    echo $GIT_BRANCH
+    docker build -t $JOB_NAME-git_branch .
 }
 
 
