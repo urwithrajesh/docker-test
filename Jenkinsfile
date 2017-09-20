@@ -72,7 +72,7 @@ stage 'Junit'
 stage 'Docker Image'
   node {
     echo 'Building Application'
-sh 'echo "Name of the Branch is ${GIT_BRANCH} and Project name is ${JOB_NAME}"'
+sh 'echo "Name of the Branch is ${env.GIT_BRANCH} and Project name is ${JOB_NAME}"'
 
 }
 
