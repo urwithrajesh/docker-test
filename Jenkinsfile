@@ -75,8 +75,8 @@ stage 'Docker Image'
     git url: 'https://github.com/urwithrajesh/docker-test'
     sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
     git_branch = readFile('GIT_BRANCH').trim()
-    echo git_branch 
-    sh 'docker build -t $JOB_NAME-git_branch .'
+    echo $git_branch 
+    //sh 'docker build -t $JOB_NAME-git_branch .'
 }
 
 
