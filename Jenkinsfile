@@ -53,8 +53,9 @@ stage 'Download'
     node {
         echo 'Building.......'
         notifyBuildSlack('Starting Prod Job','chatops')
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]])
-        }
+        //checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]])
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'LocalBranch', localBranch: "**"]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]])
+}
 
 stage 'SonarQube'
     node {
@@ -75,7 +76,7 @@ stage 'Docker Image'
     git url: 'https://github.com/urwithrajesh/docker-test'
     sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
     git_branch = readFile('GIT_BRANCH').trim()
-    echo $git_branch 
+    echo git_branch
     //sh 'docker build -t $JOB_NAME-git_branch .'
 }
 
