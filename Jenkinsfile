@@ -76,7 +76,8 @@ stage 'Docker Image'
     sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
     git_branch = readFile('GIT_BRANCH').trim()
     echo git_branch
-      docker build -t ${JOB_NAME}-${git_branch} .
+      sh '''docker build -t ${JOB_NAME}-${git_branch} .
+'''
 }
 
 
