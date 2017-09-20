@@ -72,9 +72,10 @@ stage 'Junit'
 stage 'Docker Image'
   node {
     echo 'Building Application'
-      sh '''  git rev-parse --abbrev-ref HEAD > GIT_BRANCH\'
-    git_branch = readFile(\'GIT_BRANCH\').trim()
-    echo git_branch'''
+      sh '''  
+      git rev-parse --abbrev-ref HEAD > GIT_BRANCH
+      git_branch = readFile(\'GIT_BRANCH\').trim()
+      echo git_branch'''
       
       //script{
           //Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
