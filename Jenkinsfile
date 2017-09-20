@@ -75,7 +75,8 @@ stage 'Docker Image'
 //sh 'echo "Name of the Branch is ${GIT_BRANCH} and Project name is ${JOB_NAME}"'
       script{
           //Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
-          echo "Name of the Branch is ${GIT_BRANCH} and Project name is ${JOB_NAME}" 
+          def branch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+          echo "Name of the Branch is $branch and Project name is ${JOB_NAME}" 
       }
 }
 
