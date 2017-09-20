@@ -72,10 +72,8 @@ stage 'Junit'
 stage 'Docker Image'
   node {
     echo 'Building Application'
-        sh '''
-            Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
-            docker build -t ${JOB_NAME}-$Branch .
-        '''  
+sh '''Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
+docker build -t ${JOB_NAME}-$Branch .'''
 }
 
 
