@@ -72,16 +72,11 @@ stage 'Junit'
 stage 'Docker Image'
   node {
     echo 'Building Application'
-      sh '''  
-      git rev-parse --abbrev-ref HEAD > GIT_BRANCH
-      git_branch = readFile(\'GIT_BRANCH\').trim()
-      echo git_branch'''
-      
-      //script{
-          //Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
-        //  def branch = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-         // echo "Name of the Branch is $branch and Project name is ${JOB_NAME}" 
-      //}
+    git url: 'https://github.com/urwithrajesh/docker-test'
+    sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
+    git_branch = readFile('GIT_BRANCH').trim()
+    echo git_branch
+
 }
 
 
