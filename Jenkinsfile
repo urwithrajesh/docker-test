@@ -74,9 +74,8 @@ stage 'Docker Image'
     echo 'Building Application'
 //sh 'echo "Name of the Branch is ${GIT_BRANCH} and Project name is ${JOB_NAME}"'
       script{
-          Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
+          //Branch=`echo ${GIT_BRANCH} | cut -d "/" -f2`
           echo "Name of the Branch is ${GIT_BRANCH} and Project name is ${JOB_NAME}" 
-            echo "Branch name is $Branch"    
       }
 }
 
