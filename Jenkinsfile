@@ -10,7 +10,7 @@ node {
         deploy()
 }
 
-// Slack functions 
+// ####### Slack functions #################
 def notifyBuildSlack(String buildStatus, String toChannel) 
     {
         // build status of null means successful
@@ -63,8 +63,9 @@ def notifyDockerSlack()
         def summary = "Docker Image id ${docker_image_id}"
         slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
     }
-// end of slack functions
+// ################# End of slack functions #################
 
+// ################# Checking out code from GITHUB #################
 def checkout () {
     stage 'Checkout code'
     node {
@@ -81,7 +82,7 @@ def checkout () {
         }
     }
 
-
+// ################# Calling SonarQube #################
 def sonartest () {
   stage 'SonarQube'
     node {
@@ -92,6 +93,7 @@ def sonartest () {
         }
       }
 
+// ################# Running Junit Test #################
 def junit() {
   stage 'Junit'
     node {
@@ -99,11 +101,12 @@ def junit() {
         }
       }
 
+// ################# Creating DOCKER IMAGES #################
 def docker() {
   stage 'Docker Image'
   node {
     echo 'Building Application'
-//Getting BRANCH NAME
+//Finding BRANCH NAME
     git url: 'https://github.com/urwithrajesh/docker-test'
     sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
     git_branch = readFile('GIT_BRANCH').trim()
@@ -125,6 +128,7 @@ def docker() {
      }
   }
 
+// ################# Deploy #################
 def deploy() {
   stage 'Deploy'
       node {
@@ -132,7 +136,7 @@ def deploy() {
       notifyDeploySlack('Production Job Finished','chatops')
       }
     }
-
+// ################# Upload RPM or Docker Images to Artifacts #################
 def upload() {
   stage 'Upload'
   node {
@@ -140,6 +144,7 @@ def upload() {
     }
   }
 
+// ################# Sending message on Slack for Approval #################
 def approval() {
   stage('Approval'){
       notifySlackApprovalApplicationOwner('chatops')
