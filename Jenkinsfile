@@ -100,7 +100,6 @@ def docker() {
       
         sh 'image_id=`docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'`'
         //sh '''docker_image_id=`docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'`
-        groovy util.groovy
         String docker_image_id = env['image_id']
         echo  "Docker Image ID is $docker_image_id"
     }
