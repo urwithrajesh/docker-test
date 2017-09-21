@@ -103,23 +103,26 @@ def docker() {
   stage 'Docker Image'
   node {
     echo 'Building Application'
-    //Getting BRANCH NAME
+//Getting BRANCH NAME
     git url: 'https://github.com/urwithrajesh/docker-test'
     sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
     git_branch = readFile('GIT_BRANCH').trim()
     echo git_branch
     echo 'Checking IF IMAGE EXISTS'
-    //Finding if Image already exists
+    
+//Finding if Image already exists
     sh 'docker images | grep $JOB_NAME-'+git_branch+' | wc -l>flag'
     id = readFile 'flag'
     echo "PRINTING Value of Flag is ${id}"
+    
+    sh 'if [ '+id+' -eq 1 ];then
+                echo "Image ALREADY EXIST"
+        else
+                echo "NO IMAGE"
+        fi'
 
-          if (readFile 'flag' == 1)
-    println('IMAGE is present')
-else
-    println('IMAGE is not present')
           
-    //Building Docker Image
+//Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
      sh 'docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'>image_id'
      docker_image_id = readFile 'image_id'
