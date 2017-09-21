@@ -113,11 +113,13 @@ def docker() {
     sh 'docker images | grep $JOB_NAME-'+git_branch+' | wc -l>flag'
     id = readFile 'flag'
     echo "PRINTING Value of Flag is ${id}"
-      
-     if (${id} == 1) 
-         echo 'IMAGE ALREADY EXISTS'
-      else 
-         echo 'NO IMAGE'
+
+    if [ $id -eq 1 ]
+then
+  echo "Image ALREADY EXIST"
+else
+ echo "NO IMAGE"
+fi
           
     //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
