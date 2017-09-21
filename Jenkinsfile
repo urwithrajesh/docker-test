@@ -114,13 +114,6 @@ def docker() {
     sh 'docker images | grep $JOB_NAME-'+git_branch+' | wc -l>flag'
     id = readFile 'flag'
     echo "PRINTING Value of Flag is ${id}"
-    
-    sh 'if [ '+id+' -eq 1 ];then
-                echo "Image ALREADY EXIST"
-        else
-                echo "NO IMAGE"
-        fi'
-
           
 //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
@@ -153,13 +146,6 @@ def approval() {
       input "Deploy to prod?"
     }
   }
-    
-def build () {
-    stage 'Build'
-    // cache maven artifacts
-    shareM2 '/tmp/m2repo'
-    mvn 'clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -B -V'
-}
 
 
 //def unitTest() {
