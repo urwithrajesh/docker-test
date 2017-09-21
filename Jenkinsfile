@@ -2,7 +2,6 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-// Refer https://gist.github.com/jonico/e205b16cf07451b2f475543cf1541e70
 node {
         checkout()
         sonartest()
@@ -12,7 +11,6 @@ node {
 }
 
 // Slack functions 
-//Setting up functions to use 
 def notifyBuildSlack(String buildStatus, String toChannel) 
     {
         // build status of null means successful
@@ -27,9 +25,7 @@ def notifyBuildSlack(String buildStatus, String toChannel)
         } else {
           colorCode = '#FF0000' // RED
         }
- 
- //def summary = " Dev Job STARTED '${env.JOB_NAME} [${env.BUILD_NUMBER}]. Check Status at (${env.BUILD_URL}console)' "
-         // Send slack notifications all messages
+
     slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
     }
 
@@ -143,15 +139,15 @@ def build () {
 //    }
 //}
 
-def getRepoSlug() {
-    tokens = "${env.JOB_NAME}".tokenize('/')
-    org = tokens[tokens.size()-3]
-    repo = tokens[tokens.size()-2]
-    return "${org}/${repo}"
-}
+//def getRepoSlug() {
+//    tokens = "${env.JOB_NAME}".tokenize('/')
+//    org = tokens[tokens.size()-3]
+//    repo = tokens[tokens.size()-2]
+//    return "${org}/${repo}"
+//}
 
-def getBranch() {
-    tokens = "${env.JOB_NAME}".tokenize('/')
-    branch = tokens[tokens.size()-1]
-    return "${branch}"
-}
+//def getBranch() {
+//    tokens = "${env.JOB_NAME}".tokenize('/')
+//    branch = tokens[tokens.size()-1]
+//    return "${branch}"
+//}
