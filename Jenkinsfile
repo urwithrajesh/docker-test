@@ -6,6 +6,7 @@ import groovy.json.JsonSlurper
 node {
     // pull request or feature branch
     if  (env.BRANCH_NAME != 'master') {
+        echo "I am in OTHER section "
         checkout()
         sonartest()
         junit()
@@ -18,6 +19,7 @@ node {
     }
      // master branch / production
     else {
+        echo "I am in MASTER section "
         checkout()
         sonartest()
         junit()
