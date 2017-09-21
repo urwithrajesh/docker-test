@@ -103,19 +103,31 @@ def docker() {
   stage 'Docker Image'
   node {
     echo 'Building Application'
+    //Getting BRANCH NAME
     git url: 'https://github.com/urwithrajesh/docker-test'
     sh 'git rev-parse --abbrev-ref HEAD > GIT_BRANCH'
     git_branch = readFile('GIT_BRANCH').trim()
     echo git_branch
-     
-      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
-      
-        sh 'docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'>image_id'
-        //sh '''docker_image_id=`docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'`
-        docker_image_id = readFile 'image_id'
-        echo "Docker image build for this job is ${docker_image_id}"
-        notifyDockerSlack()
-        }
+    
+    //Finding if Image already exists
+    sh ' docker images | grep $JOB_NAME-'+git_branch+' | wc -l > flag'
+    id = readFile 'flag'
+          echo "Value of Flag is ${id}"
+          sh '''if [ '+id+' = 1 ]; then
+                echo \'Image already exist .. need to cleanup first\'
+        else
+                echo "no image, we can create new one"
+        fi'''
+          
+          
+    //Building Docker Image
+     sh 'docker build -t $JOB_NAME-'+git_branch+' .'
+     sh 'docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'>image_id'
+     docker_image_id = readFile 'image_id'
+     echo "Docker image build for this job is ${docker_image_id}"
+      // Sending Image ID on Slack
+      notifyDockerSlack()
+     }
   }
 
 def deploy() {
