@@ -114,7 +114,7 @@ def docker() {
     id = readFile 'flag'
     echo "PRINTING Value of Flag is ${id}"
 
-          if ('+flag+' == '1')
+          if (readFile 'flag' == 1)
     println('IMAGE is present')
 else
     println('IMAGE is not present')
