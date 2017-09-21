@@ -4,34 +4,11 @@ import groovy.json.JsonSlurper
 
 // Refer https://gist.github.com/jonico/e205b16cf07451b2f475543cf1541e70
 node {
-    // pull request or feature branch
-    if  (env.BRANCH_NAME != 'master') {
-        echo "I am in OTHER section "
         checkout()
         sonartest()
         junit()
         docker()
         deploy()
-
-        // test whether this is a regular branch build or a merged PR build
-        if (!isPRMergeBuild()) {
-        }
-    }
-     // master branch / production
-    else {
-        echo "I am in MASTER section "
-        checkout()
-        sonartest()
-        junit()
-        build()
-        upload()
-        approval()
-        deploy()
-    }
-}
-
-def isPRMergeBuild() {
-    return (env.BRANCH_NAME ==~ /^PR-\d+$/)
 }
 
 // Slack functions 
@@ -87,23 +64,15 @@ def notifyDeploySlack(String buildStatus, String toChannel)
 
 // end of slack functions
 
-//def checkout () {
-//    stage 'Checkout code'
-//    node {
-//        echo 'Building.......'
-//        notifyBuildSlack('Starting Prod Job','chatops')
-//        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'LocalBranch', localBranch: "**"]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]])
-//      }
-//    }
-
 def checkout () {
     stage 'Checkout code'
-    context="continuous-integration/jenkins/"
-    context += isPRMergeBuild()?"branch/checkout":"pr-merge/checkout"
-    echo "${context}"
-    checkout scm
-   // setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
-}
+    node {
+        echo 'Building.......'
+        notifyBuildSlack('Starting Prod Job','chatops')
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'LocalBranch', localBranch: "**"]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]])
+      }
+    }
+
 
 def sonartest () {
   stage 'SonarQube'
@@ -185,16 +154,4 @@ def getBranch() {
     tokens = "${env.JOB_NAME}".tokenize('/')
     branch = tokens[tokens.size()-1]
     return "${branch}"
-}
-
-void setBuildStatus(context, message, state) {
-// partially hard coded URL because of https://issues.jenkins-ci.org/browse/JENKINS-36961, adjust to your own GitHub instance
-    echo "inside setBuildStatus function "
-      step([
-//      $class: "GitHubCommitStatusSetter",
-//      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
-//      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/${getRepoSlug()}"],
-      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-  ]);
 }
