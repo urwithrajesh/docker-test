@@ -96,7 +96,11 @@ def docker() {
     git_branch = readFile('GIT_BRANCH').trim()
     echo git_branch
     //sh 'docker build -t $JOB_NAME-git_branch .'
-      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
+      sh '
+          docker build -t $JOB_NAME-'+git_branch+' .
+          docker_image_id=`docker images | grep $JOB_NAME-'+git_branch+' | awk '{print $3}'`
+          echo "Docker Image ID is $docker_image_id"
+          '
     }
   }
 
