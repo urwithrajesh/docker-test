@@ -78,7 +78,7 @@ stage 'Docker Image'
     git_branch = readFile('GIT_BRANCH').trim()
     echo git_branch
     //sh 'docker build -t $JOB_NAME-git_branch .'
-      sh 'cat git_branch'
+      sh 'echo '+git_branch+''
 }
 
 
