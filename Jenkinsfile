@@ -58,6 +58,11 @@ def notifyDeploySlack(String buildStatus, String toChannel)
     slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
     }
 
+def dockerSlack(String dockerimageID) 
+    {
+        def summary = "Docker Image id ${dockerimageID}"
+        slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
+    }
 // end of slack functions
 
 def checkout () {
@@ -65,8 +70,15 @@ def checkout () {
     node {
         echo 'Building.......'
         notifyBuildSlack('Starting Prod Job','chatops')
-        checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'LocalBranch', localBranch: "**"]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]])
-      }
+        checkout([
+                $class: 'GitSCM', 
+                branches: [[name: '*/master']], 
+                doGenerateSubmoduleConfigurations: false, 
+                extensions: [[$class: 'LocalBranch', localBranch: "**"]], 
+                submoduleCfg: [], 
+                userRemoteConfigs: [[url: 'https://github.com/urwithrajesh/docker-test']]
+                ])
+        }
     }
 
 
@@ -102,6 +114,7 @@ def docker() {
         //sh '''docker_image_id=`docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'`
         docker_image_id = readFile 'image_id'
         echo "Docker image build for this job is ${docker_image_id}"
+        dockerSlack('${docker_image_id}')
         }
   }
 
