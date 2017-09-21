@@ -114,7 +114,7 @@ def docker() {
     id = readFile 'flag'
     echo "PRINTING Value of Flag is ${id}"
 
-    if ( $id -eq 1 )
+    if ( $id -eq '1' )
 then
   echo "Image ALREADY EXIST"
 else
