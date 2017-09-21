@@ -98,11 +98,11 @@ def docker() {
      
       sh 'docker build -t $JOB_NAME-'+git_branch+' .'
       
-        sh 'image_id=`docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'`'
+        sh 'docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'>image_id'
         //sh '''docker_image_id=`docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'`
-        String docker_image_id = env['image_id']
-        echo  "Docker Image ID is $docker_image_id"
-    }
+        docker_image_id = readFile 'image_id'
+        echo "Docker image build for this job is ${docker_image_id}"
+        }
   }
 
 def deploy() {
