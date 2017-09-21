@@ -98,6 +98,7 @@ def checkout () {
     stage 'Checkout code'
     context="continuous-integration/jenkins/"
     context += isPRMergeBuild()?"branch/checkout":"pr-merge/checkout"
+    echo ${context}
     // newer versions of Jenkins do not seem to support setting custom statuses before running the checkout scm step ...
     // setBuildStatus ("${context}", 'Checking out...', 'PENDING')
     checkout scm
