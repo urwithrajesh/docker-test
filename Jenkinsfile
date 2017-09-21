@@ -112,7 +112,7 @@ def docker() {
     //Finding if Image already exists
     sh 'docker images | grep $JOB_NAME-'+git_branch+' | wc -l>flag'
     id = readFile 'flag'
-    echo 'PRINTING Value of Flag is ${id}'
+    echo "PRINTING Value of Flag is ${id}"
           
      sh '''if [ '+id+' = 1 ]; then
                 echo \'Image already exist .. need to cleanup first\'
