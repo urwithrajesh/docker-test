@@ -120,7 +120,7 @@ def docker() {
           
 //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
-     sh '$JOB_NAME-'+git_branch+'>image_name'
+     sh 'echo $JOB_NAME-'+git_branch+'>image_name'
      sh 'docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'>image_id'
      docker_image_name = readFile 'image_name'
      docker_image_id = readFile 'image_id'
