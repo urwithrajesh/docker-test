@@ -123,13 +123,13 @@ def docker() {
     sh 'docker images | grep $JOB_NAME-'+git_branch+' | head -1| wc -l>flag'
     flag_id = readFile 'flag'
     echo "PRINTING Value of Flag is ${flag_id}"
-    if ( flag_id > 0 ) {
-      println "Value is greater than ZERO --- $flag_id"
+    int id = Integer.parseInt(flag_id)
+    if ( id > 0 ) {
+      println "Value is greater than ZERO --- $id"
     }
     else {
-        echo "VALUE IS ZERO - Flag id value is $flag_id"
-    }
-          
+        echo "VALUE IS ZERO - Flag id value is $id"
+    }  
 //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
      sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
