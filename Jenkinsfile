@@ -127,9 +127,10 @@ def docker() {
      echo "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
  
 // Pushing Docker Image to docker hub
-     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
-     sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
-      // Sending Image ID on Slack
+//     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
+//     sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
+
+// Sending Image ID on Slack
       notifyDockerSlack()
      }
   }
@@ -139,7 +140,12 @@ def deploy() {
   stage 'Deploy'
       node {
       echo 'Deploying to server..'
-      notifyDeploySlack('Production Job Finished','chatops')
+       
+// Pushing Docker Image to docker hub
+     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
+     sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
+              
+      notifyDeploySlack('Docker Image is uploaded ... Production Job Finished','chatops')
       }
     }
 // ################# Upload RPM or Docker Images to Artifacts #################
