@@ -148,6 +148,11 @@ else {
     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
 } 
 
+sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $1}\'>image_name'
+sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $3}\'>image_id'
+docker_image_name = readFile 'image_name'
+docker_image_id = readFile 'image_id'
+          
 // Sending Image ID on Slack
       notifyDockerSlack()
      }
