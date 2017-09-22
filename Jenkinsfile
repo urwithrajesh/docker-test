@@ -120,7 +120,7 @@ def docker() {
     echo 'Checking IF IMAGE EXISTS'
     
 //Finding if Image already exists
-    sh 'docker images | grep $JOB_NAME-'+git_branch+' | wc -l>flag'
+    sh 'docker images | grep $JOB_NAME-'+git_branch+' |grep uriwthraj| wc -l>flag'
     id = readFile 'flag'
     echo "PRINTING Value of Flag is ${id}"
           
