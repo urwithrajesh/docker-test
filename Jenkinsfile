@@ -63,6 +63,13 @@ def notifyDockerSlack()
         def summary = "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
         slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
     }
+def notifyDockerHubSlack() 
+    {
+        def summary = "To download Docker Image run this command --> docker pull uriwthraj/${docker_image_name}"
+        slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
+    }
+docker pull uriwthraj/docker-test-master
+
 // ################# End of slack functions #################
 
 // ################# Checking out code from GITHUB #################
@@ -144,7 +151,7 @@ def deploy() {
 // Pushing Docker Image to docker hub
      sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
      sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
-              
+      notifyDockerHubSlack()        
       notifyDeploySlack('Docker Image is uploaded ... Production Job Finished','chatops')
       }
     }
