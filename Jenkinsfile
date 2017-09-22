@@ -119,7 +119,7 @@ def docker() {
     echo git_branch
     echo 'Checking IF IMAGE EXISTS'
     
-//Finding if Image already exists
+// Setting up variables
 sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $1}\'>image_name'
 sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $3}\'>image_id'
 docker_image_name = readFile 'image_name'
@@ -131,6 +131,7 @@ flag_id = readFile 'flag'
 echo "PRINTING Value of Flag is ${flag_id}"
 int id = Integer.parseInt(flag_id.trim())
 
+//Finding if Image already exists
 if ( id > 0 ) {
   echo "Image Already exists - Deleting old image"
   sh 'docker rmi -f '+docker_image_id+''
@@ -185,26 +186,3 @@ def approval() {
       input "Deploy to prod?"
     }
   }
-
-
-//def unitTest() {
-//    stage 'Unit tests'
-//    mvn 'test -B -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true'
-//    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-//    if (currentBuild.result == "UNSTABLE") {
-//        sh "exit 1"
-//    }
-//}
-
-//def getRepoSlug() {
-//    tokens = "${env.JOB_NAME}".tokenize('/')
-//    org = tokens[tokens.size()-3]
-//    repo = tokens[tokens.size()-2]
-//    return "${org}/${repo}"
-//}
-
-//def getBranch() {
-//    tokens = "${env.JOB_NAME}".tokenize('/')
-//    branch = tokens[tokens.size()-1]
-//    return "${branch}"
-//}
