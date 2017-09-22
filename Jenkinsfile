@@ -154,10 +154,10 @@ else {
 
     echo "No such image - we can create new one "
     echo "Creating new image"
-    docker build -t $JOB_NAME-$git_branch .
-    docker tag ${JOB_NAME}-$Branch $docker_hub/$JOB_NAME-$git_branch
+  //  docker build -t $JOB_NAME-$git_branch .
+  //  docker tag ${JOB_NAME}-$Branch $docker_hub/$JOB_NAME-$git_branch
     echo "Pushing Image to Docker hub"
-    docker push $docker_hub/$JOB_NAME-$git_branch
+  //  docker push $docker_hub/$JOB_NAME-$git_branch
 } 
 //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
