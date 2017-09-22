@@ -120,12 +120,23 @@ def docker() {
     echo 'Checking IF IMAGE EXISTS'
     
 //Finding if Image already exists
+    sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $1}\'>image_name'
+    sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $3}\'>image_id'
+    docker_image_name = readFile 'image_name'
+    docker_image_id = readFile 'image_id'
+          
     sh 'docker images | grep $JOB_NAME-'+git_branch+' | head -1| wc -l>flag'
     flag_id = readFile 'flag'
     echo "PRINTING Value of Flag is ${flag_id}"
     int id = Integer.parseInt(flag_id.trim())
+    
     if ( id > 0 ) {
       println "Value is greater than ZERO --- $id"
+      println "Branch Name is $git_branch"
+      println "Job name is $JOB_NAME"
+      println "Image id is $docker_image_id"
+      println "Image Name is $docker_image_name"
+       
     }
     else {
         echo "VALUE IS ZERO - Flag id value is $id"
@@ -133,10 +144,6 @@ def docker() {
 //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
      sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
-     sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $1}\'>image_name'
-     sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $3}\'>image_id'
-     docker_image_name = readFile 'image_name'
-     docker_image_id = readFile 'image_id'
      echo "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
  
 // Pushing Docker Image to docker hub
