@@ -124,7 +124,8 @@ def docker() {
     flag_id = readFile 'flag'
     echo "PRINTING Value of Flag is ${flag_id}"
     sh '''
-      echo "Value of ID is '+flag_id+'"
+      id=`docker images| grep $JOB_NAME-'+git_branch+' | head -1| wc -l`
+      echo "Value of ID is $id"
       if [ $id -gt 0 ]
         then
           echo "Image Already exists - Deleting old image"
