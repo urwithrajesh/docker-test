@@ -60,7 +60,7 @@ def notifyDeploySlack(String buildStatus, String toChannel)
 
 def notifyDockerSlack() 
     {
-        def summary = "Docker Image id ${docker_image_id}"
+        def summary = "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
         slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
     }
 // ################# End of slack functions #################
