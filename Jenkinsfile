@@ -125,6 +125,10 @@ def docker() {
      docker_image_name = readFile 'image_name'
      docker_image_id = readFile 'image_id'
      echo "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
+ 
+// Pushing Docker Image to docker hub
+     sh 'docker push $JOB_NAME-'+git_branch+''
+
       // Sending Image ID on Slack
       notifyDockerSlack()
      }
