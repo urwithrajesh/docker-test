@@ -123,7 +123,7 @@ def docker() {
     sh 'docker images | grep $JOB_NAME-'+git_branch+' | head -1| wc -l>flag'
     flag_id = readFile 'flag'
     echo "PRINTING Value of Flag is ${flag_id}"
-    if ( $flag_id > 0 ) {
+    if ( flag_id > 0 ) {
       println "Value is greater than ZERO --- $flag_id"
     }
     else {
