@@ -144,7 +144,7 @@ if ( id > 0 ) {
   docker rmi $docker_image_id -f
   echo "Creating new image"
   docker build -t $JOB_NAME-$git_branch .
-  docker tag $JOB_NAME-$git_branch $docker_hub/$JOB_NAME-$git_branch
+  docker tag $JOB_NAME-$git_branch ${docker_hub}/$JOB_NAME-$git_branch
   echo "Pushing Image to Docker hub"
   docker push $docker_hub/$JOB_NAME-$git_branch
    
