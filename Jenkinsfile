@@ -141,12 +141,12 @@ if ( id > 0 ) {
   println "Docker hub details $docker_hub"
 
   echo "Image Already exists - Deleting old image"
-//  docker rmi $docker_image_id -f
+  docker rmi $docker_image_id -f
   echo "Creating new image"
-//  docker build -t $JOB_NAME-$git_branch .
-//  docker tag $JOB_NAME-$git_branch $docker_hub/$JOB_NAME-$git_branch
+  docker build -t $JOB_NAME-$git_branch .
+  docker tag $JOB_NAME-$git_branch $docker_hub/$JOB_NAME-$git_branch
   echo "Pushing Image to Docker hub"
-//  docker push $docker_hub/$JOB_NAME-$git_branch
+  docker push $docker_hub/$JOB_NAME-$git_branch
    
 }
 else {
@@ -154,10 +154,10 @@ else {
 
     echo "No such image - we can create new one "
     echo "Creating new image"
-  //  docker build -t $JOB_NAME-$git_branch .
-  //  docker tag ${JOB_NAME}-$Branch $docker_hub/$JOB_NAME-$git_branch
+    docker build -t $JOB_NAME-$git_branch .
+    docker tag ${JOB_NAME}-$Branch $docker_hub/$JOB_NAME-$git_branch
     echo "Pushing Image to Docker hub"
-  //  docker push $docker_hub/$JOB_NAME-$git_branch
+    docker push $docker_hub/$JOB_NAME-$git_branch
 } 
 //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
