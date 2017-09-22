@@ -125,7 +125,7 @@ sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | aw
 docker_image_name = readFile 'image_name'
 docker_image_id = readFile 'image_id'
 String docker_hub
-docker_hub = "uriwthra"   
+docker_hub = "uriwthraj"   
 
 sh 'docker images | grep $JOB_NAME-'+git_branch+' | head -1| wc -l>flag'
 flag_id = readFile 'flag'
@@ -138,7 +138,7 @@ if ( id > 0 ) {
   println "Job name is $JOB_NAME"
   println "Image id is $docker_image_id"
   println "Image Name is $docker_image_name"
-  println "Docker hub details $docker_hub
+  println "Docker hub details $docker_hub"
 
   echo "Image Already exists - Deleting old image"
   docker rmi $docker_image_id -f
