@@ -124,7 +124,8 @@ sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | aw
 sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |head -1 | awk \'{print $3}\'>image_id'
 docker_image_name = readFile 'image_name'
 docker_image_id = readFile 'image_id'
-docker_hub = uriwthraj   
+String docker_hub
+docker_hub = "uriwthra"   
 
 sh 'docker images | grep $JOB_NAME-'+git_branch+' | head -1| wc -l>flag'
 flag_id = readFile 'flag'
