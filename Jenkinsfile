@@ -126,6 +126,7 @@ def docker() {
           
 //Building Docker Image
      sh 'docker build -t $JOB_NAME-'+git_branch+' .'
+     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
      sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |awk \'{print $1}\'>image_name'
      sh 'docker images | grep $JOB_NAME-'+git_branch+' | grep uriwthraj |awk \'{print $3}\'>image_id'
      docker_image_name = readFile 'image_name'
@@ -148,7 +149,6 @@ def deploy() {
       echo 'Deploying to server..'
        
 // Pushing Docker Image to docker hub
-     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
      sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
       notifyDockerHubSlack()        
       notifyDeploySlack('Docker Image is uploaded ... Production Job Finished','chatops')
