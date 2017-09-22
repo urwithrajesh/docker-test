@@ -68,7 +68,6 @@ def notifyDockerHubSlack()
         def summary = "To download Docker Image run this command --> docker pull uriwthraj/${docker_image_name}"
         slackSend (baseUrl: 'https://utdigital.slack.com/services/hooks/jenkins-ci/', channel: 'chatops', message: summary , teamDomain: 'utdigital', token: 'a8p3yJ8BdYURLzmorsUyaIaI')
     }
-docker pull uriwthraj/docker-test-master
 
 // ################# End of slack functions #################
 
