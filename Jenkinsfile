@@ -135,7 +135,7 @@ if ( id > 0 ) {
   echo "Image Already exists - Deleting old image"
   sh 'docker rmi -f '+docker_image_id+''
   echo "Creating new image"
-  docker build -t $JOB_NAME-$git_branch .
+  sh 'docker build -t $JOB_NAME-'+git_branch+' .'
   sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
   //docker tag $JOB_NAME-$git_branch ${docker_hub}/${JOB_NAME}-${git_branch}
   echo "Pushing Image to Docker hub"
@@ -147,7 +147,7 @@ else {
 
     echo "No such image - we can create new one "
     echo "Creating new image"
-    docker build -t $JOB_NAME-$git_branch .
+    sh 'docker build -t $JOB_NAME-'+git_branch+' .'
     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
     //docker tag ${JOB_NAME}-$Branch $docker_hub/$JOB_NAME-$git_branch
     echo "Pushing Image to Docker hub"
