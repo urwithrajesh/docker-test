@@ -127,6 +127,7 @@ def docker() {
      echo "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
  
 // Pushing Docker Image to docker hub
+     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
      sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
       // Sending Image ID on Slack
       notifyDockerSlack()
