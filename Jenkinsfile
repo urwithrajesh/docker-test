@@ -137,10 +137,7 @@ if ( id > 0 ) {
   echo "Creating new image"
   sh 'docker build -t $JOB_NAME-'+git_branch+' .'
   sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
-  //docker tag $JOB_NAME-$git_branch ${docker_hub}/${JOB_NAME}-${git_branch}
-  echo "Pushing Image to Docker hub"
-  sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
-   
+  //docker tag $JOB_NAME-$git_branch ${docker_hub}/${JOB_NAME}-${git_branch}   
 }
 else {
     echo "VALUE IS ZERO - Flag id value is $id"
@@ -149,18 +146,7 @@ else {
     echo "Creating new image"
     sh 'docker build -t $JOB_NAME-'+git_branch+' .'
     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
-    //docker tag ${JOB_NAME}-$Branch $docker_hub/$JOB_NAME-$git_branch
-    echo "Pushing Image to Docker hub"
-    sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
 } 
-//Building Docker Image
-     sh 'docker build -t $JOB_NAME-'+git_branch+' .'
-     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
-     echo "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
- 
-// Pushing Docker Image to docker hub
-//     sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
-//     sh 'docker push uriwthraj/$JOB_NAME-'+git_branch+''
 
 // Sending Image ID on Slack
       notifyDockerSlack()
