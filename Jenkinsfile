@@ -133,7 +133,7 @@ int id = Integer.parseInt(flag_id.trim())
 
 if ( id > 0 ) {
   echo "Image Already exists - Deleting old image"
-  docker rmi $docker_image_id -f
+  sh 'docker rmi $docker_image_id -f'
   echo "Creating new image"
   docker build -t $JOB_NAME-$git_branch .
   sh 'docker tag $JOB_NAME-'+git_branch+' uriwthraj/$JOB_NAME-'+git_branch+''
