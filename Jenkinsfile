@@ -124,7 +124,7 @@ def docker() {
      sh 'docker images | grep $JOB_NAME-'+git_branch+' | awk \'{print $3}\'>image_id'
      docker_image_name = readFile 'image_name'
      docker_image_id = readFile 'image_id'
-     echo "Docker image build for this job is ${docker_image_id}"
+     echo "Docker image build for this job is ${docker_image_name} and Docker image ID is ${docker_image_id}"
       // Sending Image ID on Slack
       notifyDockerSlack()
      }
