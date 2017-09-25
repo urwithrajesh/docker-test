@@ -77,8 +77,9 @@ def checkout () {
     stage 'Checkout code'
     node {
         echo 'Building.......'
-        userid=currentBuild.getRawBuild().getCauses()[0].getUserId()
-        echo 'Userid is $userid"
+wrap([$class: 'BuildUser']) {
+  sh 'echo ${BUILD_USER}'
+}
          notifyBuildSlack('Starting Prod Job','chatops')
         checkout([
                 $class: 'GitSCM', 
