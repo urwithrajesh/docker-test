@@ -10,6 +10,7 @@ node {
         deploy()
 }
 
+
 // ####### Slack functions #################
 def notifyBuildSlack(String buildStatus, String toChannel) 
     {
@@ -76,7 +77,9 @@ def checkout () {
     stage 'Checkout code'
     node {
         echo 'Building.......'
-        notifyBuildSlack('Starting Prod Job','chatops')
+        userid=currentBuild.getRawBuild().getCauses()[0].getUserId()
+        echo 'Userid is $userid"
+         notifyBuildSlack('Starting Prod Job','chatops')
         checkout([
                 $class: 'GitSCM', 
                 branches: [[name: '*/master']], 
