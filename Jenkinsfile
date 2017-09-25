@@ -16,7 +16,7 @@ def notifyBuildSlack(String buildStatus, String toChannel)
     {
         // build status of null means successful
         buildStatus =  buildStatus ?: 'SUCCESSFUL'
-        def summary = "${buildStatus}: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Jenkins>)"
+            def summary = "${userId} ${buildStatus}: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (<${env.BUILD_URL}|Jenkins>)"
         def colorCode = '#FF0000'
 
         if (buildStatus == 'STARTED' || buildStatus == 'UNSTABLE') {
@@ -78,8 +78,10 @@ def checkout () {
     node {
         echo 'Building.......'
 wrap([$class: 'BuildUser']) {
-  sh 'echo ${BUILD_USER}'
+  sh '${BUILD_USER}>user_name'
 }
+userId = readFile 'user_name'
+            
          notifyBuildSlack('Starting Prod Job','chatops')
         checkout([
                 $class: 'GitSCM', 
