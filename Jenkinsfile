@@ -78,9 +78,10 @@ def checkout () {
     node {
         echo 'Building.......'
 wrap([$class: 'BuildUser']) {
-  sh '${BUILD_USER}>user_name'
+  sh 'echo ${BUILD_USER}>user_name'
 }
 userId = readFile 'user_name'
+            echo ${userId}
             
          notifyBuildSlack('Starting Prod Job','chatops')
         checkout([
